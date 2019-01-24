@@ -72,6 +72,7 @@ int main(int argc, char* argv[]) {
 	char encrypMsg[msgLen];
 	char keyGen[msgLen];
 	for (i = 0, j = 0; i < msgLen; ++i, ++j) {
+		printf("i=%d, j=%d\n", i, j);
 		if (msg[i] == ' ') {
 			keyGen[i] = ' ';
 			i++;
