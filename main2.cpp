@@ -18,12 +18,12 @@ int main() {
 	int i, j; //declare empty integer variables for counter purposes!
 	string inString; //declare empty variable for a string
 	cout << "Please enter a string to encrypt\n :> "; //ask user to input a string into the thing.
-	cin >> inString; //take that input down
+	getline(cin, inString);
 
 	string inKey; //declare empty variable for key!
 	cout << "Please enter your key. Save this, as you will need it in order to properly decrypt things!" << endl;
 	cout << ":> ";
-	cin >> inKey;
+	getline(cin, inKey);
 
 	int msgLen = inString.length(); //get length and commit it to an integer
 	char msg[msgLen]; //create a char array matching those parameters
@@ -31,6 +31,7 @@ int main() {
 
 	/* Now we're going to repeat the same process we just did but with the key. 
 	Retrieve user input, get an integer of length, create a character array, copy string into array. */
+
 	int keyLen = inKey.length();
 	char key[keyLen];
 	strcpy(key, inKey.c_str());
@@ -46,6 +47,7 @@ int main() {
 			j = 0;
 		}
 		keyGen[i] = key[j];
+		printf("%s\n", keyGen);
 	}
 
 	return 0;
