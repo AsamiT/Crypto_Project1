@@ -15,6 +15,7 @@
 using namespace std;
 
 int msgLen, keyLen;
+int i, j;
 
 int main(int argc, char* argv[]) {
 
@@ -68,14 +69,15 @@ int main(int argc, char* argv[]) {
 	keyLen = strlen(testKey); //proper encryption
 	printf("msgLen: %d\n", msgLen);
 	printf("keyLen: %d\n", keyLen);
+	char encrypMsg[msgLen];
 	char keyGen[msgLen];
-
-	for (int i = 0, j = 0; i < msgLen; ++i, ++j) {
+	for (i = 0, j = 0; i < msgLen; ++i, ++j) {
+		if (msg[i] == ' ') {
+			keyGen[i] = ' ';
+			i++;
+		}
 		if (j == keyLen) {
 			j = 0;
-		}
-		if (msg[i] = ' ') {
-			keyGen[i] = ' ';
 		}
 		keyGen[i] = testKey[j];
 	}
