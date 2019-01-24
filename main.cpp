@@ -10,34 +10,61 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string.h>
+#include <unistd.h>
 
 using namespace std;
-int msgLen, keyLen;
-int i,j;
 
-int getLen(char Set, char Key){
-	msgLen = strlen(Set);
-	keyLen = strlen(Key);
-}
+int main(int argc, char* argv[]) {
 
-int main() {
-	
+	/* Error checking statement to see if a user has entered an integer value as an argument. */
+	if (argc == 1) {
+		printf("Syntax: Please enter one integer value between 1 and 3.\n");
+		return 0;
+	}
+
+	/* Error checking statement to see if a user has entered too many integer values on the command line. */
+	if (argc > 2) {
+		printf("Please only enter one integer at a time.\n");
+		return 0;
+	}
+
+	/* Create our syntax selector by converting the char* value
+	 in argv[1] to a long integer, as it is required by the C++ library. */
+	long syntaxSelect;
+	syntaxSelect = strtol(argv[1], NULL, 10);
+
+	/* Error checking statement to verify the integer is between 1 and 3. */
+	if (syntaxSelect > 3 | syntaxSelect < 1) {
+		printf("Please enter an integer value between 1 and 3.\n");
+		return 0;
+	}
+
 	/* setting up our messages with spaces! */
-	char msg1[] = "A HEALTHY ATTITUDE IS CONTAGIOUS BUT DONT WAIT TO CATCH IT FROM OTHERS.\n";
-	char msg2[] = "IF YOU CARRY YOUR CHILDHOOD WITH YOU YOU NEVER BECOME OLDER.\n";
-	char msg3[] = "FROM PRINCIPLES IS DERIVED PROBABILITY BUT TRUTH OR CERTAINTY IS OBTAINED ONLY FROM FACTS.\n";
 
 	/* our encryption key... */
 	char encKey[] = "MALOY";
 	char testKey[] = "KHOSHAVI"; //this is included in order to test the example test case given in the project PDF. Debug only.
 
-	cout << "Message 1: " << msg1;
-	cout << "Message 2: " << msg2;
-	cout << "Message 3: " << msg3;
+	if (syntaxSelect == 1) {
+		char msg[] = "A HEALTHY ATTITUDE IS CONTAGIOUS BUT DONT WAIT TO CATCH IT FROM OTHERS.";
+		printf("Message 1: %s\n", msg);
+	}
 
-	for (i = 0; i < 
+	if (syntaxSelect == 2) {
+		char msg[] = "IF YOU CARRY YOUR CHILDHOOD WITH YOU YOU NEVER BECOME OLDER.";
+		printf("Message 2: %s\n", msg);
+	}
+
+	if (syntaxSelect == 3) {
+		char msg[] = "FROM PRINCIPLES IS DERIVED PROBABILITY BUT TRUTH OR CERTAINTY IS OBTAINED ONLY FROM FACTS.";
+		printf("Message 3: %s\n", msg);
+	}
+
+	int msgLen = strlen(msg); //msg
+	int keyLen = strlen(encKey); //proper encryption
+	printf("msgLen: %d\n", msgLen);
+	printf("keyLen: %d\n", keyLen);
+	char enctyptedMsg[msgLen];
 
 	return 0;
 }
-
-
