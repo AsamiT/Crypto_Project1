@@ -14,6 +14,8 @@
 
 using namespace std;
 
+int msgLen, keyLen;
+
 int main(int argc, char* argv[]) {
 
 	/* Error checking statement to see if a user has entered an integer value as an argument. */
@@ -47,24 +49,36 @@ int main(int argc, char* argv[]) {
 
 	if (syntaxSelect == 1) {
 		char msg[] = "A HEALTHY ATTITUDE IS CONTAGIOUS BUT DONT WAIT TO CATCH IT FROM OTHERS.";
+		msgLen = strlen(msg); //msg
 		printf("Message 1: %s\n", msg);
 	}
 
 	if (syntaxSelect == 2) {
 		char msg[] = "IF YOU CARRY YOUR CHILDHOOD WITH YOU YOU NEVER BECOME OLDER.";
+		msgLen = strlen(msg); //msg
 		printf("Message 2: %s\n", msg);
 	}
 
 	if (syntaxSelect == 3) {
 		char msg[] = "FROM PRINCIPLES IS DERIVED PROBABILITY BUT TRUTH OR CERTAINTY IS OBTAINED ONLY FROM FACTS.";
+		msgLen = strlen(msg); //msg
 		printf("Message 3: %s\n", msg);
 	}
 
-	int msgLen = strlen(msg); //msg
-	int keyLen = strlen(encKey); //proper encryption
+	keyLen = strlen(testKey); //proper encryption
 	printf("msgLen: %d\n", msgLen);
 	printf("keyLen: %d\n", keyLen);
-	char enctyptedMsg[msgLen];
+	char keyGen[msgLen];
+
+	for (int i = 0, j = 0; i < msgLen; ++i, ++j) {
+		if (j == keyLen) {
+			j = 0;
+		}
+		if (msg[i] = ' ') {
+			keyGen[i] = ' ';
+		}
+		keyGen[i] = testKey[j];
+	}
 
 	return 0;
 }
