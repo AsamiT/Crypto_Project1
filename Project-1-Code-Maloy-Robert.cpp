@@ -20,10 +20,9 @@ string testPhrases[] = {
 	"A HEALTHY ATTITUDE IS CONTAGIOUS BUT DONT WAIT TO CATCH IT FROM OTHERS.",
 	"IF YOU CARRY YOUR CHILDHOOD WITH YOU YOU NEVER BECOME OLDER.",
 	"FROM PRINCIPLES IS DERIVED PROBABILITY BUT TRUTH OR CERTAINTY IS OBTAINED ONLY FROM FACTS.",
-	"I WANT TO BREAK FREE",
+	"I WANT TO BREAK FREE!",
 	"Actions certainly do speak louder than words...",
-	"Yesterday, all my troubles seemed so far away-- now it looks as if they're here to stay, oh I believe in Yesterday.",
-	"Baby, you can light my fire...",
+	"Baby you can light my fire...",
 	"The Internationale unites the human race!"
 };
 
@@ -35,6 +34,7 @@ int main(int argc, char* argv[]) {
 	string inString; //declare empty variable for a string
 
 	if (!argv[1]) { //if there is no first argument...
+        cout << "** STARTING PROGRAM IN 'MANUAL ENTRY' MODE! **\n---------------\nIf you want to use one of our test strings as specified by the abstract document \nplease enter the following syntax\n   Project-1-Code-Maloy-Robert [int value between 1 and 7]\n\nStrings 1-3 are given by the abstract document for test cases,\nString 4 is a custom all-caps test case\nStrings 5-7 are mixed caps, for testing purposes.\n---------------\n" << endl;
 		cout << "Please enter a string to encrypt\n :> "; //ask user to input a string into the thing.
 		getline(cin, inString); //C-ism to get us a string that has no garbage at the end of it.
 	}
@@ -44,9 +44,9 @@ int main(int argc, char* argv[]) {
 		long syntaxSelect;
 		syntaxSelect = strtol(argv[1], NULL, 10);
 
-		/* Error checking statement to verify the integer is between 1 and 8. */
+		/* Error checking statement to verify the integer is between 1 and 7. */
 		if (syntaxSelect > 8 | syntaxSelect < 1) {
-			printf("Please enter an integer value between 1 and 8.\n");
+			printf("Please enter an integer value between 1 and 7.\n");
 			return 0;
 		}
 		else {
@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
 				//do nothing if it is.
 			}
 			else {
-				keyGen[i] = msg[i]; //if it isn't alphabetical, then simply push the original character to the keygen; this means any punctuation, or anything like that.
+				keyGen[i] = msg[i]; //if it isn't alphabetical, then simply push the expected key value to the keygen; this means any punctuation, or anything like that.
 			}
 		}
 	}
@@ -119,12 +119,14 @@ int main(int argc, char* argv[]) {
 			encryptedMsg[i] = ' ';
 			i++;
 		}
-		encryptedMsg[i] = ((msg[i] + keyGen[i]) % 26) + 'A'; //following the formulae for this cipher. Original character + Key character mod 26.
+		encryptedMsg[i] = ((toupper(msg[i]) + keyGen[i]) % 26) + 'A'; //following the formulae for this cipher. Original character + Key character mod 26.
 		if (msg[i] < 'A' | msg[i] > 'Z') {
 			if (msg[i] >= 'a' && msg[i] <= 'z') {
 				//do nothing...
 			}
 			else {
+                //printf("keygen[%d]: %c\n", i, keyGen[i]);
+                //printf("msg[%d]: %c\n", i, msg[i]);
 				encryptedMsg[i] = msg[i];
 			}
 		}
