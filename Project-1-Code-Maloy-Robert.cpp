@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
 		}
 		keyGen[i] = key[j]; //set the new key array's current iterative value to that of the key's current value.
 		if (msg[i] < 'A' | msg[i] > 'Z') { //if the character at msg[i] is not a capital letter...
-			if (msg[i] > 'a' && msg[i] < 'z') { //double check to see if it's a lowercase letter.
+			if (msg[i] >= 'a' && msg[i] <= 'z') { //double check to see if it's a lowercase letter.
 				//do nothing if it is.
 			}
 			else {
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
 		}
 		encryptedMsg[i] = ((msg[i] + keyGen[i]) % 26) + 'A'; //following the formulae for this cipher. Original character + Key character mod 26.
 		if (msg[i] < 'A' | msg[i] > 'Z') {
-			if (msg[i] > 'a' && msg[i] < 'z') {
+			if (msg[i] >= 'a' && msg[i] <= 'z') {
 				//do nothing...
 			}
 			else {
