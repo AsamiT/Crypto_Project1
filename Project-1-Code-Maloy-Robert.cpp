@@ -16,13 +16,18 @@
 /* not always the most acceptable convention but I am not entering std:: in front of everything >:( */
 using namespace std;
 
-/* strings provided by professor in project abstract */
-string testPhrase1 = "A HEALTHY ATTITUDE IS CONTAGIOUS BUT DONT WAIT TO CATCH IT FROM OTHERS.";
-string testPhrase2 = "IF YOU CARRY YOUR CHILDHOOD WITH YOU YOU NEVER BECOME OLDER.";
-string testPhrase3 = "FROM PRINCIPLES IS DERIVED PROBABILITY BUT TRUTH OR CERTAINTY IS OBTAINED ONLY FROM FACTS.";
+string testPhrases[] = {
+	"A HEALTHY ATTITUDE IS CONTAGIOUS BUT DONT WAIT TO CATCH IT FROM OTHERS.",
+	"IF YOU CARRY YOUR CHILDHOOD WITH YOU YOU NEVER BECOME OLDER.",
+	"FROM PRINCIPLES IS DERIVED PROBABILITY BUT TRUTH OR CERTAINTY IS OBTAINED ONLY FROM FACTS.",
+	"I WANT TO BREAK FREE",
+	"Actions certainly do speak louder than words...",
+	"Yesterday, all my troubles seemed so far away-- now it looks as if they're here to stay, oh I believe in Yesterday.",
+	"Baby, you can light my fire...",
+	"The Internationale unites the human race!"
+};
 
-/* personal testing string */
-string testPhrase4 = "I WANT TO BREAK FREE";
+
 
 int main(int argc, char* argv[]) {
 
@@ -34,28 +39,18 @@ int main(int argc, char* argv[]) {
 		getline(cin, inString); //C-ism to get us a string that has no garbage at the end of it.
 	}
 	else {
-	/* Create our syntax selector by converting the char* value
-	 in argv[1] to a long integer, as it is required by the C++ library. */
+		/* Create our syntax selector by converting the char* value
+		 in argv[1] to a long integer, as it is required by the C++ library. */
 		long syntaxSelect;
 		syntaxSelect = strtol(argv[1], NULL, 10);
 
-	/* Error checking statement to verify the integer is between 1 and 4. */
-		if (syntaxSelect > 4 | syntaxSelect < 1) {
-			printf("Please enter an integer value between 1 and 4.\n");
+		/* Error checking statement to verify the integer is between 1 and 8. */
+		if (syntaxSelect > 8 | syntaxSelect < 1) {
+			printf("Please enter an integer value between 1 and 8.\n");
 			return 0;
 		}
-		/* and now we select one of our four phases, should syntaxSelect exist. */
-		if (syntaxSelect == 1) {
-			inString = testPhrase1;
-		}
-		if (syntaxSelect == 2) {
-			inString = testPhrase2;
-		}
-		if (syntaxSelect == 3) {
-			inString = testPhrase3;
-		}
-		if (syntaxSelect == 4) {
-			inString = testPhrase4;
+		else {
+			inString = testPhrases[syntaxSelect-1];
 		}
 	}
 
