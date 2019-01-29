@@ -13,9 +13,11 @@
 #include <string.h>
 #include <unistd.h>
 
-/* not always the most acceptable convention but I am not entering std:: in front of everything >:( */
+/* not always the most acceptable convention but I am not entering std:: in front of everything.
+ >sosumi.wav */
 using namespace std;
 
+/* create our array of strings that contain our test phrases. */
 string testPhrases[] = {
 	"A HEALTHY ATTITUDE IS CONTAGIOUS BUT DONT WAIT TO CATCH IT FROM OTHERS.",
 	"IF YOU CARRY YOUR CHILDHOOD WITH YOU YOU NEVER BECOME OLDER.",
@@ -23,21 +25,27 @@ string testPhrases[] = {
 	"I WANT TO BREAK FREE!",
 	"Actions certainly do speak louder than words...",
 	"Baby you can light my fire...",
-	"The Internationale unites the human race!"
+    "The Internationale unites the human race!"
 };
-
-
 
 int main(int argc, char* argv[]) {
 
 	int i, j; //declare empty integer variables for counter purposes!
 	string inString; //declare empty variable for a string
 
-	if (!argv[1]) { //if there is no first argument...
-        cout << "** STARTING PROGRAM IN 'MANUAL ENTRY' MODE! **\n---------------\nIf you want to use one of our test strings as specified by the abstract document \nplease enter the following syntax\n   Project-1-Code-Maloy-Robert [int value between 1 and 7]\n\nStrings 1-3 are given by the abstract document for test cases,\nString 4 is a custom all-caps test case\nStrings 5-7 are mixed caps, for testing purposes.\n---------------\n" << endl;
+    // Disabled manual entry system, it's too overcomplicated.
+    // RM, 01-29-19
+	/* if (!argv[1]) {
+        cout << "** STARTING PROGRAM IN 'MANUAL ENTRY' MODE! **\n---------------\nIf you want to use one of our test strings as specified by the abstract document \nplease re-run this program and enter the following syntax\n   Project-1-Code-Maloy-Robert [int value between 1 and 7]\n\nStrings 1-3 are given by the abstract document for test cases,\nString 4 is a custom all-caps test case\nStrings 5-7 are mixed caps, for testing purposes.\n---------------\n" << endl;
 		cout << "Please enter a string to encrypt\n :> "; //ask user to input a string into the thing.
 		getline(cin, inString); //C-ism to get us a string that has no garbage at the end of it.
-	}
+	} */
+    
+    if (!argv[1]) { //if no argument listed, error out and exit program.
+        cout << "Please enter an integer value between 1 and 7." << endl;
+        cout << "Syntax: ./Project-1-Code-Maloy-Robert [int 1-7]" << endl;
+        return 0;
+    }
 	else {
 		/* Create our syntax selector by converting the char* value
 		 in argv[1] to a long integer, as it is required by the C++ library. */
@@ -45,23 +53,22 @@ int main(int argc, char* argv[]) {
 		syntaxSelect = strtol(argv[1], NULL, 10);
 
 		/* Error checking statement to verify the integer is between 1 and 7. */
-		if (syntaxSelect > 8 | syntaxSelect < 1) {
+		if (syntaxSelect > 7 | syntaxSelect < 1) {
 			printf("Please enter an integer value between 1 and 7.\n");
 			return 0;
 		}
 		else {
-			inString = testPhrases[syntaxSelect-1];
+			inString = testPhrases[syntaxSelect-1]; //push the correct string.
 		}
 	}
 
 	/* Error checking statement to see if a user has entered too many integer values on the command line. */
 	if (argc > 2) {
-		printf("Please only enter one or no integers at a time.\n");
+		printf("Please only enter one integer at a time.\n");
 		return 0;
 	}
 
-	/* I was going to let you define your own key, but I kept having issues with line ending garbage, 
-	so I have decided to remove that functionality. You'll just simply have to live with my last name... */
+	/* Encryption key */
 	string inKey = "MALOY";
 
 	int msgLen = strlen(inString.c_str()); //get length and commit it to an integer
@@ -91,16 +98,20 @@ int main(int argc, char* argv[]) {
 		}
 		keyGen[i] = key[j]; //set the new key array's current iterative value to that of the key's current value.
 		if (msg[i] < 'A' | msg[i] > 'Z') { //if the character at msg[i] is not a capital letter...
-			if (msg[i] >= 'a' && msg[i] <= 'z') { //double check to see if it's a lowercase letter.
+            if (msg[i] >= 'a' && msg[i] <= 'z') { //double check to see if it's a lowercase letter.
 				//do nothing if it is.
 			}
 			else {
-				keyGen[i] = msg[i]; //if it isn't alphabetical, then simply push the expected key value to the keygen; this means any punctuation, or anything like that.
+				keyGen[i] = msg[i];
+                /* if it isn't alphabetical, then simply push the expected key value to the keygen;
+                 this means any punctuation, or anything like that. */
 			}
 		}
 	}
 	printf("msg: %s\n", msg);
 	printf("keygen: %s\n", keyGen);
+    
+    /* debug values */
 	//printf("length of key phrase=%lu\n", strlen(keyGen));
 	//printf("expected length=%d\n", msgLen);
 
@@ -119,14 +130,14 @@ int main(int argc, char* argv[]) {
 			encryptedMsg[i] = ' ';
 			i++;
 		}
-		encryptedMsg[i] = ((toupper(msg[i]) + keyGen[i]) % 26) + 'A'; //following the formulae for this cipher. Original character + Key character mod 26.
+		encryptedMsg[i] = ((toupper(msg[i]) + keyGen[i]) % 26) + 'A';
+        //following the formulae for this cipher. Original character + Key character mod 26.
+        
 		if (msg[i] < 'A' | msg[i] > 'Z') {
 			if (msg[i] >= 'a' && msg[i] <= 'z') {
 				//do nothing...
 			}
 			else {
-                //printf("keygen[%d]: %c\n", i, keyGen[i]);
-                //printf("msg[%d]: %c\n", i, msg[i]);
 				encryptedMsg[i] = msg[i];
 			}
 		}
@@ -137,6 +148,26 @@ int main(int argc, char* argv[]) {
 	if ((int)strlen(encryptedMsg) != msgLen) {
 		printf("ERR: Encrypted message exceeds original message size.\n");
 	}
+    
+    /* now we decrypt it again */
+    char decryptedMsg[msgLen];
+    for (int i = 0; i < msgLen; i++) decryptedMsg[i] = '\0';
+    for(i = 0; i <= msgLen; ++i) {
+        if (encryptedMsg[i] == ' ') {
+            decryptedMsg[i] = ' ';
+            i++;
+        }
+        decryptedMsg[i] = (((encryptedMsg[i] - keyGen[i]) + 26) % 26) + 'A';
+        if (encryptedMsg[i] < 'A' | encryptedMsg[i] > 'Z') {
+            if (encryptedMsg[i] >= 'a' && encryptedMsg[i] <= 'z') {
+                //do nothing...
+            }
+            else {
+                decryptedMsg[i] = encryptedMsg[i];
+            }
+        }
+    }
+    printf("decrypted msg: %s\n", decryptedMsg);
 
 	/* terminate program when complete :) */
 	return 0;
