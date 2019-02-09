@@ -1,2 +1,2 @@
 # Crypto_Project1
-Project #1 for Applied Cryptography at Florida Polytechnic University.
+Projects #1 and #2 for Applied Cryptography at Florida Polytechnic University.
