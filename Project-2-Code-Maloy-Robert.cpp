@@ -48,6 +48,7 @@ int main() {
         lenSet = y.length();
     }
     for (int z = 0; z < x.length(); z++) {
+            //printf("%d and %d ->", (int)x[z], (int)y[z]);
             char xor_set = (char)x[z]^y[z];
             printf("%c", xor_set);
         }
