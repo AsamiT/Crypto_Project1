@@ -22,14 +22,7 @@ def stringxor(msg1, msg2):
         return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(msg1, msg2[:len(msg1)])])
 
 txt = stringxor(string1, string2)
-txt1 = stringxor(txt, 'that')
-txt2 = stringxor(txt, 'the')
+txtcomp = stringxor(txt, 'that')
 print(txt)
 #print('')
-#print(txt1)
-#print(txt2)
-#print('')
-#ascii_string = str(txt.replace(" ", "").decode('hex'));
-#print(ascii_string)
-
-#ascii_string = str(base64.b16decode(txt))[2:-1]
+print(txtcomp)
