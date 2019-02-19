@@ -46,7 +46,9 @@ int main() {
         string newString = string(longestString, '0').append(cryptPhrases[i]);
         cryptPhrases[i] = newString;
         cout << cryptPhrases[i] << endl;
-        cout << (cryptPhrases[i].to_i(16) ^ cryptPhrases[i+1].to_i(16)).to_s(16); << endl;
+        for (int z = 0; z < longestString; z++) {
+            //nope
+        }
     }
 }
 
