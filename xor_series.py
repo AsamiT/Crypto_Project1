@@ -15,8 +15,21 @@ string9="9d64746a044fd8e0ee08651f2fb563d0fa41acbc8d44bad08833922998c2b1bd6f3e551
 string10="8f2175740e5893abe818351438be33cde606adb2d04fa29c8933826195c3a1fc7f20405496e9168c0a82e54d82b634b04f04afb265ef0321b74c9668144a2900872b72624aeb082dbad27c8c0937613185555673dc6cc2d7a16cef5692a874eac24deffe56142e8164ded48415b053abd1732a4d21"
 targetString="866e786a0042d4abf21e305c35ad65c1b542bbbe8f55b3848032c6359fc3e2e96b21421196a107c90195a30896bc61f54906abae35fd196fb1519b2d1206320b892b7c7719e60e37b697738c0776292a9c5d132ac66a8bd1a728bb5882e629"
 
-txt = hex(int(string1, 16) ^ int(string2, 16)).rstrip("L").lstrip("0x")
-ascii_string = str(txt.replace(" ", "").decode('hex'));
-print(ascii_string)
+def stringxor(msg1, msg2):
+    if len(msg1) > len(msg2):
+        return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(msg1[:len(msg2)], msg2)])
+    else:
+        return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(msg1, msg2[:len(msg1)])])
+
+txt = stringxor(string1, string2)
+txt1 = stringxor(txt, 'irma')
+txt2 = stringxor(txt, 'she')
+print(txt)
+#print('')
+#print(txt1)
+#print(txt2)
+#print('')
+#ascii_string = str(txt.replace(" ", "").decode('hex'));
+#print(ascii_string)
 
 #ascii_string = str(base64.b16decode(txt))[2:-1]
