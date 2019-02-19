@@ -22,8 +22,8 @@ def stringxor(msg1, msg2):
         return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(msg1, msg2[:len(msg1)])])
 
 txt = stringxor(string1, string2)
-txt1 = stringxor(txt, 'irma')
-txt2 = stringxor(txt, 'she')
+txt1 = stringxor(txt, 'that')
+txt2 = stringxor(txt, 'the')
 print(txt)
 #print('')
 #print(txt1)
