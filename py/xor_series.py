@@ -1,8 +1,17 @@
+#!/usr/bin/env python
 # First time writing Python code in quite awhile. Let's see how this goes.
-
 # Project 2 for Applied Cryptography
 # Robert Maloy
 # 9 February 2019
+
+#Importing some libraries to help
+import string
+import collections
+import sets
+
+#Imported from example code in Outline
+def strxor(a, b):
+    return "".join([chr(ord(x) ^ ord(y)) for (x,y) in zip(a,b)])
 
 # We're going to declare our strings! What a joyous miracle, no bloody arrays of strings!
 string1="9d6e7a7d155295eef8512c087da56084f743aaa9985ee3848a768c3484d2e2ea6b3f4e5483f612d55987ff4782f360bd4809bab835fa1e65f8459c6814472508cc7f72241ee70c34fb9e7c8c4c246132845d5d73d070de99a73efe1e9ee627ea8f4aaae147087cce6c8cd08813f81caf9d7120486b16"
@@ -15,21 +24,49 @@ string7="876f377f04559df9ea1d695c2db971c8fc45feb69855e393972f963598c1b0fc7a3b5c5
 string8="9c647079135f94eef80265133bec67ccf006b3bc8944a69d84228f2296cae2e962364a069ba111c91188e34ccfb27af5400bbaa467f20469b50ed33c1e436601897869240be30e36a99b6990442561249e5d1327c170d8dce638f35f83a866f9ca08b8f05f0123856491c68b56b91dad9d6b2c4a6315238b2316c88b51c7fbbcd50f9ee7fbc66ccad06febb77070e92c3eb292befb613250bf2c69a3e40a3410959a14630e9d5219e780828c81ca1d766cc0f811"
 string9="9d64746a044fd8e0ee08651f2fb563d0fa41acbc8d44bad08833922998c2b1bd6f3e55188df853cd5992e44688bf71f54a02a4eb73f40221ba4d8720564328009e726d7003e00779ba9c79d84d3322379548473ac67185"
 string10="8f2175740e5893abe818351438be33cde606adb2d04fa29c8933826195c3a1fc7f20405496e9168c0a82e54d82b634b04f04afb265ef0321b74c9668144a2900872b72624aeb082dbad27c8c0937613185555673dc6cc2d7a16cef5692a874eac24deffe56142e8164ded48415b053abd1732a4d21"
-targetString="866e786a0042d4abf21e305c35ad65c1b542bbbe8f55b3848032c6359fc3e2e96b21421196a107c90195a30896bc61f54906abae35fd196fb1519b2d1206320b892b7c7719e60e37b697738c0776292a9c5d132ac66a8bd1a728bb5882e629"
 
-# testing variables
-enc = 'the of and a to in is be that was he for it with as his I on have at by not they this had are but from or she'
+#   Array so we know what we're looking for
+ciphers = [string1, string2, string3, string4, string5, string6, string7, string8, string9, string10]
 
-def stringxor(msg1, msg2):
-    if len(msg1) > len(msg2):
-        return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(msg1[:len(msg2)], msg2)])
-    else:
-        return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(msg1, msg2[:len(msg1)])])
+#   The pre-set string we want to decrypt by force.
+targetCipher="866e786a0042d4abf21e305c35ad65c1b542bbbe8f55b3848032c6359fc3e2e96b21421196a107c90195a30896bc61f54906abae35fd196fb1519b2d1206320b892b7c7719e60e37b697738c0776292a9c5d132ac66a8bd1a728bb5882e629"
 
-txt = stringxor(string1, string2)
-print(txt)
+# To store the final key and positions we know are decrypted.
+final_key = [None]*150
+known_key_positions = set()
 
-txtcomp = stringxor(enc, txt)
-print
-print(enc)
-print(txtcomp)
+# For each cipher
+for current_index, cText in enumerate(ciphers):
+	counter = collections.Counter()
+	# for every alternative ciphertext
+	for index, cText2 in enumerate(ciphers):
+		if current_index != index: # don't XOR a text with itself
+			for indexOfChar, char in enumerate(strxor(cText.decode('hex'), cText2.decode('hex'))): # XOR the two different ciphers
+                # If we get an alphanumeric character in the result, this means it's PROBABLY a space.
+				if char in string.printable and char.isalpha(): counter[indexOfChar] += 1
+	knownSpaceIndexes = []
+
+	# Loop through all positions where a space character was possible in the current_index cipher
+	for ind, val in counter.items():
+		# Good chance that if it appears 7 times or more, it's from the currently indexed cipher.
+		if val >= 7: knownSpaceIndexes.append(ind)
+	#print(knownSpaceIndexes) -- debug
+
+	# Now XOR the current_index with spaces and we will get the key in return.
+	xor_with_spaces = strxor(cText.decode('hex'),' '*150)
+	for index in knownSpaceIndexes:
+		# Store the key's value at the correct position, and record the indexed location for it.
+		final_key[index] = xor_with_spaces[index].encode('hex')
+		known_key_positions.add(index)
+
+# Construct a hex key; XOR it; and print the output, ommitting characters we don't know.
+final_key_hex = ''.join([val if val is not None else '00' for val in final_key])
+output = strxor(targetCipher.decode('hex'),final_key_hex.decode('hex'))
+print(''.join([char if index in known_key_positions else '-' for index, char in enumerate(output)]))
+
+#Now at this stage, we'll just do things manually.
+target = "Hooray, you have completed the target text. You have finished the assignment. Hope you had fun!"
+print(target)
+key = strxor(targetCipher.decode('hex'),target)
+#for cipher in ciphers:
+    #print strxor(cipher.decode('hex'),key)
