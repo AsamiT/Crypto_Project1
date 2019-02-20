@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:second_test.cpp">
+      location = "group:cpp">
    </FileRef>
    <FileRef
-      location = "group:test_set.cpp">
+      location = "group:java">
+   </FileRef>
+   <FileRef
+      location = "group:py">
    </FileRef>
 </Workspace>
