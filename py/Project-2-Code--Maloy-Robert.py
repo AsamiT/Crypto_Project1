@@ -68,5 +68,6 @@ print(''.join([char if index in known_key_positions else '-' for index, char in 
 target = "Hooray, you have completed the target text. You have finished the assignment. Hope you had fun!"
 print(target)
 key = strxor(targetCipher.decode('hex'),target)
-#for cipher in ciphers:
-    #print strxor(cipher.decode('hex'),key)
+print(key)
+for cipher in ciphers:
+    print strxor(cipher.decode('hex'),key)
