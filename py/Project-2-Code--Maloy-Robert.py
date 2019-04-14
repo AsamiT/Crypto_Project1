@@ -4,7 +4,7 @@
 # Robert Maloy
 # 9 February 2019
 
-#Importing some libraries to help
+#Importing some libraries to help.
 import string
 import collections
 import sets
@@ -37,11 +37,12 @@ known_key_positions = set()
 
 # For each cipher
 for current_index, cText in enumerate(ciphers):
-	counter = collections.Counter()
+    counter = collections.Counter() #create a counter
 	# for every alternative ciphertext
 	for index, cText2 in enumerate(ciphers):
 		if current_index != index: # don't XOR a text with itself
-			for indexOfChar, char in enumerate(strxor(cText.decode('hex'), cText2.decode('hex'))): # XOR the two different ciphers
+			for indexOfChar, char in enumerate(strxor(cText.decode('hex'), cText2.decode('hex'))):
+                # XOR the two different ciphers
                 # If we get an alphanumeric character in the result, this means it's PROBABLY a space.
 				if char in string.printable and char.isalpha(): counter[indexOfChar] += 1
 	knownSpaceIndexes = []
